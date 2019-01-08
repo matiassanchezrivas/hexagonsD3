@@ -2,11 +2,28 @@ var workspaces = []
 
 let estados = ['stopped', 'stopping', 'unhealthy', 'terminating', 'available', 'pending', 'starting']
 
-for(var i=0; i<100; i++){
-    let r = parseInt(Math.random()*7)
+for(var i=0; i<1000; i++){
+    let r = 1+parseInt(Math.random()*6)
     workspaces.push(
       {state: estados[r]}
     )
+  }
+
+  for(var i=0; i<100; i++){
+    let r = parseInt(Math.random()*2)
+    if(r%2 != 0){
+      workspaces.push(
+        {state: estados[r]}
+      )
+    }
+  }
+
+  for(var i=0; i<7; i++){
+    
+      workspaces.push(
+        {state: estados[0]}
+      )
+    
   }
   
 

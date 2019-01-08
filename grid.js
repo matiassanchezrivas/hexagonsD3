@@ -102,7 +102,7 @@ svg.append("g")
         return "M" + d.x + "," + d.y + hexbin.hexagon();
     })
     .attr("stroke", "white")
-    .attr("stroke-width", "1px")
+    .attr("stroke-width", "2px")
     .style("fill", 'black' )
     .on("mouseover", mover)
     .on("mouseout", mout)
@@ -117,15 +117,6 @@ var t = d3.transition()
 
 //-----------------------------  RECAMBIO
 
-var points = [];
-
-
-for (var i = 0; i < workspaces.length/MapColumns; i++) {
-    for (var j = 0; j < MapColumns; j++) {
-        if(i*MapRows+j < workspaces.length){
-        points.push([hexRadius * j * 1.75, hexRadius * i * 1.5]);}
-    }//for j
-}//for i
 
 // d3.shuffle(points)
 //Actualizar datos
@@ -139,6 +130,8 @@ hexagonos
     //     return "M" + d.x + "," + d.y + hexbin.hexagon();
     // })
 
+//-----------------------------  FILTRAR
+
 var filtrar = function (status){
     hexagonos.filter(function(d, i) { return d[0][2] !== status })
     .transition(t)   
@@ -149,15 +142,21 @@ var filtrar = function (status){
     .style("fill", function (d,i) { return statusColors[d[0][2]]; })
 }
 
+//-----------------------------  RESET COLORS
+
 var resetColors = function (){
     hexagonos
     .transition(t)   
     .style("fill", function (d,i) { return statusColors[d[0][2]]; })
 }
 
+//-----------------------------  RESET
+
 var reset= function(){
   update1()
 }
+
+//-----------------------------  MOUSE OVER
 
 function mover(d) {
     globalStatus=d[0][2];
@@ -172,6 +171,8 @@ function mover(d) {
 
 }
 
+//-----------------------------  MOUSE OUT
+
 //Mouseout function
 function mout(d) { 
 	var el = d3.select(this)
@@ -181,7 +182,9 @@ function mout(d) {
 	   ;
 };
 
-//Mouseout function
+//-----------------------------  MOUSE CLIC
+
+//Mouse clic
 function mclick(d) { 
   console.log(this)
 	var el = d3.select(this)
@@ -190,6 +193,7 @@ function mclick(d) {
 
 };
 
+//-----------------------------  UPDATE 2
 
 function update2(row, status){
   console.log('update', row, status)
@@ -206,10 +210,7 @@ var hexData = d3.selectAll(".hexagon")
 hexData.data(hexbin(points))
 .enter()
 
-
-
 hexData.exit().remove();
-
 
 hexData
 .transition()
@@ -220,6 +221,7 @@ hexData
 
 }
 
+//-----------------------------  UPDATE 1
 
 function update1(row = globalRow){
   console.log('update')
@@ -238,10 +240,7 @@ var hexData = d3.selectAll(".hexagon")
 hexData.data(hexbin(points))
 .enter()
 
-
-
 hexData.exit().remove();
-
 
 hexData
 .transition()
@@ -252,6 +251,8 @@ hexData
 
 
 }
+
+//-----------------------------  UPDATE 3 
 
 function update3(row = globalRow, status){
   row=globalRow;
@@ -278,10 +279,7 @@ var hexData = d3.selectAll(".hexagon")
 hexData.data(hexbin(points))
 .enter()
 
-
-
 hexData.exit().remove();
-
 
 hexData
 .transition()
@@ -289,9 +287,9 @@ hexData
     .attr("d", function (d) {
         return "M" + d.x + "," + d.y + hexbin.hexagon();
     })
-console.log(points)
-
 }
+
+//-----------------------------  CHANGE TAMANIO
 
 var changeTamanio = function (tamanio) {
   
@@ -303,9 +301,13 @@ var changeTamanio = function (tamanio) {
     resetColors();
 }
 
+//-----------------------------  ZOOM
+
 function zoomed() {
-  container.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  // container.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
+
+//-----------------------------  DRAG
 
 function dragstarted(d) {
   d3.event.sourceEvent.stopPropagation();
@@ -320,33 +322,39 @@ function dragended(d) {
   d3.select(this).classed("dragging", false);
 }
 
-function group(){
-  var total = 0;
-  var offset = 0;
+//-----------------------------  GROUP
+
+function group(cant = 2){
+  var total = [0,0,0];
+  var offset = [0,0,0];
+
 
   estados.forEach((status, sti)=>
   {
-
-    row=globalRow;
+    row=globalRow/2-1;
+    
     console.log('update', row, status)
   
     var index = 0;
-    console.log('Offset de '+status+' = '+offset)
+    console.log('Offset de '+status+' = '+offset[0])
 
     for (var i = 0; i < workspaces.length; i++) {
+      var offsetx = 0;
+      if(sti%cant === 0) offsetx = globalRow/2
+
       if(status == workspaces[i].state){
         x = index % row;
         y = parseInt(index / row);
         index++;
-        points[i] =[hexRadius * x * 1.75, (offset*hexRadius*1.5) + hexRadius * y * 1.5, workspaces[i].state];
-        total++;
+        points[i] =[offsetx*hexRadius*1.75 + hexRadius * x * 1.75, offset[sti%cant]*hexRadius*1.5 + hexRadius * y * 1.5, workspaces[i].state];
+        total[sti%cant]++;
       } 
     }
 
-    offset = offset + parseInt(total/row) +2 ;
-    console.log('Totales de '+status+' = '+total)
+    offset[sti % 2] = offset[sti % 2] + parseInt(total[sti%cant]/row) +2 ;
+    console.log('Totales de '+status+' = '+total[sti%cant])
 
-    total=0;
+     total = [0,0,0];
 
 
   })
@@ -356,10 +364,7 @@ function group(){
 hexData.data(hexbin(points))
 .enter()
 
-
-
 hexData.exit().remove();
-
 
 hexData
 .transition()
@@ -368,4 +373,19 @@ hexData
         return "M" + d.x + "," + d.y + hexbin.hexagon();
     })
 
+}
+
+//-----------------------------  CLICK ZOOM
+
+function clicked(d, i) {
+  if (d3.event.defaultPrevented) {
+	return; // panning, not clicking
+  }
+  node = d3.select(this);
+  var transform = getTransform(node, clickScale);
+  container.transition().duration(1000)
+     .attr("transform", "translate(" + transform.translate + ")scale(" + transform.scale + ")");
+  zoom.scale(transform.scale)
+      .translate(transform.translate);
+  scale = transform.scale;
 }

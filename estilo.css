@@ -1,0 +1,51 @@
+path{
+    fill-opacity: 1;
+}
+
+path:hover{
+    fill-opacity: 0;
+
+}
+
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+ .hexagon[data-status=STOPPED] .icon-hex-lg {
+    background-color: #222
+}
+
+ .hexagon[data-status=AVAILABLE] .icon-hex-lg {
+    background-color: #69c4a6
+}
+
+ .hexagon[data-status=PENDING] .icon-hex-lg {
+    background-color: #5288d1
+}
+
+ .hexagon[data-status=UNHEALTHY] .icon-hex-lg {
+    background-color: #c61d6a
+}
+
+ .hexagon[data-status=TERMINATING] .icon-hex-lg {
+    background-color: #F59B00
+}
+
+ .hexagon[data-status=STOPPING] .icon-hex-lg {
+    background-color: #789
+}
+
+ .hexagon[data-status=STARTING] .icon-hex-lg {
+    background-color: #f8e185
+}

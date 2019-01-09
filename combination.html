@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="hexbin.js"></script>
+    <script type="text/javascript" src="workspaces.js"></script>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+
+  </head>
+  <body>
+        <div id="option">
+            <input name="updateButton" 
+                   type="button" 
+                   value="Reset" 
+                   onclick="reset()" />
+                   <input name="updateButton" 
+                   type="button" 
+                   value="Reset colors" 
+                   onclick="resetColors()" />
+        </div>
+        <div id="option">
+        <input name="updateButton" 
+        type="button" 
+        value="Filtrar availables" 
+        onclick="filtrar('available')" />
+        <input name="updateButton" 
+        type="button" 
+        value="Only availables" 
+        onclick="update3(null, 'available')" />
+      </div>
+      <div id="option">
+          <input name="updateButton" 
+          type="button" 
+          value="Filtrar Stopped" 
+          onclick="filtrar('stopped')" />
+          <input name="updateButton" 
+          type="button" 
+          value="Only stopped" 
+          onclick="update3(null, 'stopped')" />
+        </div>
+        <div id="option">
+            <input name="updateButton" 
+            type="button" 
+            value="Filtrar starting" 
+            onclick="filtrar('starting')" />
+            <input name="updateButton" 
+            type="button" 
+            value="Only starting" 
+            onclick="update3(null, 'starting')" />
+          </div>
+          <div id="option">
+              <input name="updateButton" 
+              type="button" 
+              value="10" 
+              onclick="update1(8)" />
+              <input name="updateButton" 
+              type="button" 
+              value="5" 
+              onclick="update1(5)" />
+              <input name="updateButton" 
+              type="button" 
+              value="3" 
+              onclick="update1(3)" />
+              <input name="updateButton" 
+              type="button" 
+              value="1" 
+              onclick="update1(1)" />
+            </div>
+            <div id="option">
+                <input name="updateButton" 
+                type="button" 
+                value="10" 
+                onclick="changeTamanio(10)" />
+                <input name="updateButton" 
+                type="button" 
+                value="20" 
+                onclick="changeTamanio(20)" />
+                <input name="updateButton" 
+                type="button" 
+                value="30" 
+                onclick="changeTamanio(30)" />
+                <input name="updateButton" 
+                type="button" 
+                value="40" 
+                onclick="changeTamanio(40)" />
+              </div>
+              <div id="option">
+                  <input name="updateButton" 
+                  type="button" 
+                  value="Group" 
+                  onclick="group()" />
+                </div>
+      <p>Estado: <span></span></p>
+        <div id="canvas"></div>
+        <script type="text/javascript" src="combination.js"></script>
+    </body>
+
+</html>

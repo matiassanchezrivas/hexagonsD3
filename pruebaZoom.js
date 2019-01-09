@@ -6,12 +6,13 @@ var scale = 1.0;
 
 var selected= {i:-1, j:-1};
 
-var zoom = d3.behavior.zoom()
-    .scale(scale)
+var zoom = d3.zoom()
+    // .scale(scale)
     .scaleExtent([1, 5])
-    .on("zoom", zoomed);
+    .on("zoom", zoomed)
+    .on("wheel.zoom", null);
 
-    var svg = d3.select("body").append("svg")
+var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
     .attr("style", "outline: medium solid red;")
@@ -69,7 +70,7 @@ console.log(hexbin(points))
   svg
 	.attr("viewBox", defaultView)
 	.attr("preserveAspectRatio", "xMidYMid meet")
-        .call(zoom);
+     .call(zoom);
 
 
 /*
@@ -105,8 +106,8 @@ function clicked(d, i) {
   
     container.transition().duration(1000)
        .attr("transform", "translate(" + transform.translate + ")scale(" + transform.scale + ")");
-    zoom.scale(transform.scale)
-        .translate(transform.translate);
+    // zoom.scale(transform.scale)
+    //     .translate(transform.translate);
     scale = transform.scale;
     selected = {j: d.j, i: d.i};
   } else {
@@ -122,10 +123,10 @@ function circletype(d) {
 }
 
 function zoomed() {
-  var translateX = d3.event.translate[0];
-  var translateY = d3.event.translate[1];
-  var xScale = d3.event.scale;
-  container.attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + xScale + ")");
+//   var translateX = d3.event.translate[0];
+//   var translateY = d3.event.translate[1];
+//   var xScale = d3.event.scale;
+  container.attr("transform", d3.event.transform)
 }
 
 function reset() {
@@ -135,7 +136,7 @@ function reset() {
   .attr("transform", "translate(0,0)scale(1,1)");
 
   zoom.scale(scale)
-      .translate([0,0]);
+//       .translate([0,0]);
 }
 
 d3.select(self.frameElement).attr("margin", 10);

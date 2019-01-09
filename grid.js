@@ -106,7 +106,7 @@ svg.append("g")
     .style("fill", 'black' )
     .on("mouseover", mover)
     .on("mouseout", mout)
-    .on("click", mclick)
+    .on("click", clicked)
     
 var t = d3.transition()
     .duration(2000)
@@ -376,6 +376,8 @@ hexData
 }
 
 //-----------------------------  CLICK ZOOM
+var bbox, viewBox, vx, vy, vw, vh, defaultView;
+var clickScale = 2.0;	
 
 function clicked(d, i) {
   if (d3.event.defaultPrevented) {
@@ -383,9 +385,21 @@ function clicked(d, i) {
   }
   node = d3.select(this);
   var transform = getTransform(node, clickScale);
-  container.transition().duration(1000)
+
+  svg.transition().duration(1000)
      .attr("transform", "translate(" + transform.translate + ")scale(" + transform.scale + ")");
   zoom.scale(transform.scale)
       .translate(transform.translate);
   scale = transform.scale;
+}
+
+function getTransform(node, xScale) {
+  bbox = node.node().getBBox();
+  var bx = 10;
+  var by = 10;
+  var bw = 100;
+  var bh = 100;
+  var tx = -bx*xScale + vx + vw/2 - bw*xScale/2;
+  var ty = -by*xScale + vy + vh/2 - bh*xScale/2;
+  return {translate: [tx, ty], scale: xScale}
 }

@@ -1,9 +1,9 @@
 path{
-    fill-opacity: 1;
+    fill-opacity: .9;
 }
 
 path:hover{
-    fill-opacity: 0;
+    fill-opacity: 1;
 
 }
 
